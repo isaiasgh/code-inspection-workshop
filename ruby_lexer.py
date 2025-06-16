@@ -219,14 +219,15 @@ def t_REGEX(t):
     r'/(?:[^/\\]|\\.)+/[gimoux]*'
     return t
 
-def t_CADENA_INTERPOLADA(t):
+def t_cadena_interpolada(t):
     r'\"(?:[^\"\\]|\\.)*\"'
+    contenido = t.value[1:-1]  # Quitar comillas
 
-    if '#{' in t.value:
+    if '#{' in contenido:
         t.type = 'CADENA_INTERPOLADA'
     else:
         t.type = 'CADENA'
-    t.value = t.value[1:-1]
+    t.value = contenido
     return t
 
 def t_CADENA_SIMPLE(t):
@@ -272,14 +273,13 @@ def t_ID(t):
     t.type = reserved.get(t.value, 'ID')  
     return t
 
-def t_COMENTARIO_LINEA(t):
+def t_comentario_linea(t):
     r'\#.*'
     pass
 
-def t_COMENTARIO_BLOQUE(t):
+def t_comentario_bloque(t):
     r'=begin[\s\S]*?=end'
     pass
-
 
 #Aporte Paulette Maldonado
 t_MAS = r'\+'
@@ -360,21 +360,19 @@ def analizar_y_loguear(lexer_instance, archivo_ruby, prefijo_log):
     
     print(f"Análisis completado. Resultados en: {ruta_log}")
 
-
-def pruebas_Isaac():
+def pruebas_isaac():
     lexer = lex.lex()
     analizar_y_loguear(lexer, "algoritmo2_Isaac_Criollo.rb", "lexico-IsaacCriollo")
 
-def pruebas_Joel():
+def pruebas_joel():
     lexer = lex.lex()
     analizar_y_loguear(lexer, "algoritmo3_Joel_Guamani.rb", "lexico-Joel_Guamani")
 
-def pruebas_Paulette():
+def pruebas_paulette():
     lexer = lex.lex()
     analizar_y_loguear(lexer, "algoritmo1_Paulette_Maldonado.rb", "lexico-PauletteMaldonado")
 
-
 if __name__ == "__main__":
-    pruebas_Isaac()
-    pruebas_Joel()
-    pruebas_Paulette()
+    pruebas_isaac()
+    pruebas_joel()
+    pruebas_paulette()
